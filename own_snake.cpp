@@ -45,7 +45,28 @@ namespace Game_elements{
         void changeLocation(Star * star, int x, int y);
         void checkEdges();
         void checkPosition();
+        void refreshEdges();
     };
+    
+    void OwnSnake::refreshEdges()
+    {
+        for(int i = 0; i < right_edge; ++i){
+            wmove(win, 0, i);
+            waddch(win, ' ');
+        }
+        for(int i = 0; i < right_edge; ++i){
+            wmove(win, down_edge - 1, i);
+            waddch(win, ' ');
+        }
+        for(int i = 0; i < down_edge; ++i){
+            wmove(win, i, 0);
+            waddch(win, ' ');
+        }
+        for(int i = 0; i < down_edge; ++i){
+            wmove(win, i, right_edge - 1);
+            waddch(win, ' ');
+        }
+    }
     
     void OwnSnake::checkPosition()
     {
@@ -70,10 +91,26 @@ namespace Game_elements{
 
     void OwnSnake::checkEdges()
     {
-        star->x = star->x == right_edge ? 1 : star->x;
-        star->x = star->x == 0 ? right_edge : star->x;
-        star->y = star->y == down_edge ? 1 : star->y;
-        star->y = star->y == 0 ? down_edge : star->y;
+        if(star->x >= right_edge){
+            star->x = 1;
+            refreshEdges();
+            return;
+        }
+        if(star->x <= 0){
+            star->x = right_edge - 1;
+            refreshEdges();
+            return;
+        }
+        if(star->y >= down_edge){
+            star->y = 1;
+            refreshEdges();
+            return;
+        }
+        if(star->y <= 0){
+            star->y = down_edge - 1;
+            refreshEdges();
+            return;
+        }
     }
 
     void OwnSnake::hideStar()
@@ -82,18 +119,6 @@ namespace Game_elements{
         while(tmp->next)
 	    tmp = tmp->next;
         wmove(win, tmp->y, tmp->x);
-        waddch(win, ' ');
-        wmove(win, tmp->y + 1, tmp->x);
-        waddch(win, ' ');
-        wmove(win, tmp->y - 1, tmp->x);
-        waddch(win, ' ');
-        wmove(win, tmp->y, tmp->x + 1);
-        waddch(win, ' ');
-        wmove(win, tmp->y, tmp->x - 1);
-        waddch(win, ' ');
-        wmove(win, tmp->y + 1, tmp->x + 1);
-        waddch(win, ' ');
-        wmove(win, tmp->y - 1, tmp->x - 1);
         waddch(win, ' ');
     }
 
@@ -114,11 +139,14 @@ namespace Game_elements{
         changeLocation(star, star->x + direction.x, star->y + direction.y);
         checkEdges();
         checkPosition();
+        //checkEdges();
         wrefresh(win);
     }
 
     void OwnSnake::turnUp()
     {
+        if(direction.x == 0 && direction.y == 1)
+            return;
         direction.x = 0;
         direction.y = -1;
         keepMoving();
@@ -126,6 +154,8 @@ namespace Game_elements{
 
     void OwnSnake::turnDown()
     {
+        if(direction.x == 0 && direction.y == -1)
+            return;
         direction.x = 0;
         direction.y = 1;
         keepMoving();
@@ -133,6 +163,8 @@ namespace Game_elements{
 
     void OwnSnake::turnLeft()
     {
+        if(direction.x == 1 && direction.y == 0)
+            return;
         direction.x = -1;
         direction.y = 0;
         keepMoving();
@@ -140,6 +172,8 @@ namespace Game_elements{
 
     void OwnSnake::turnRight()
     {
+        if(direction.x == -1 && direction.y == 0)
+            return;
         direction.x = 1;
         direction.y = 0;
         keepMoving();

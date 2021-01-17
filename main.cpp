@@ -40,6 +40,7 @@ int main()
             own_snake.addStar();
             food.changeLocation();
         }
+        food.display();
         if(own_snake.getState() == Game_elements::dead)
             break;
     }

@@ -43,6 +43,7 @@ namespace Game_elements{
         void changeLocation(Star * star, int x, int y);
         void checkEdges();
         void checkPosition();
+        void refreshEdges();
     };
     
 }
