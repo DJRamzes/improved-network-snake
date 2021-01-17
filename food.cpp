@@ -19,8 +19,8 @@ namespace Game_elements{
         Food(WINDOW * in_win, int in_max_x, int in_max_y) : win(in_win), max_x(in_max_x), max_y(in_max_y)
         {
             srand(time(0));
-	    x = rand() % max_x;
-	    y = rand() % max_y;
+	    x = 20 + rand() % max_x - 20;
+	    y = 20 + rand() % max_y - 20;
 	    wmove(win, y, x);
 	    waddch(win, '*');
         }
@@ -33,8 +33,8 @@ namespace Game_elements{
 
     void Food::changeLocation()
     {
-        x = rand() % max_x;
-        y = rand() % max_y;
+        x = 20 + rand() % max_x - 20;
+        y = 20 + rand() % max_y - 20;
         wmove(win, y, x);
         waddch(win, '*');
     }
