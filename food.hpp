@@ -17,8 +17,8 @@ namespace Game_elements{
         Food(WINDOW * in_win, int in_max_x, int in_max_y) : win(in_win), max_x(in_max_x), max_y(in_max_y)
         {
             srand(time(0));
-	    x = 20 + rand() % max_x - 20;
-	    y = 20 + rand() % max_y - 20;
+	    x = 5 + rand() % (max_x - 10);
+	    y = 5 + rand() % (max_y - 10);
 	    wmove(win, y, x);
 	    waddch(win, '*');
         }
