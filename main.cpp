@@ -14,8 +14,8 @@ int main()
     int max_x, max_y;
     getmaxyx(stdscr, max_y, max_x);
     
-    Game_elements::OwnSnake own_snake(stdscr, max_x, max_y, max_x / 2, max_y / 2);
-    Game_elements::Food food(stdscr, max_x, max_y);
+    Game_elements::Local_elements::OwnSnake own_snake(stdscr, max_x, max_y, max_x / 2, max_y / 2);
+    Game_elements::Local_elements::Food food(stdscr, max_x, max_y);
     int key;
     while(1){
         key = getch();
@@ -36,12 +36,12 @@ int main()
                 own_snake.keepMoving();
                 break;
         }
-        if(Game_elements::checkContact(&food, &own_snake)){
+        if(Game_elements::Local_elements::checkContact(&food, &own_snake)){
             own_snake.addStar();
             food.changeLocation();
         }
         food.display();
-        if(own_snake.getState() == Game_elements::dead)
+        if(own_snake.getState() == Game_elements::Local_elements::dead)
             break;
     }
     endwin();
