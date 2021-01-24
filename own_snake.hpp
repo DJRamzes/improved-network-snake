@@ -2,12 +2,12 @@ namespace Game_elements{
     
     namespace Local_elements{
     
-            enum State{
-                alive = 1,
-                dead = 0
-            };
+        enum State{
+            alive = 1,
+            dead = 0
+        };
     
-            class OwnSnake{
+        class OwnSnake{
             struct Star{
     	        int x, y;
     	        Star * next;

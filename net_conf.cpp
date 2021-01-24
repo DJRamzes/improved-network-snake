@@ -34,8 +34,8 @@ namespace Game_elements{
             service = new boost::asio::io_service();
             sock = new ip::tcp::socket(*service);
             ep = new ip::tcp::endpoint(ip::address::from_string(addr), port);
-            sock->non_blocking(true);
             sock->connect(*ep);
+            sock->non_blocking(true);
         }
         
         Client::~Client()
@@ -91,8 +91,8 @@ namespace Game_elements{
             ep = new ip::tcp::endpoint(ip::tcp::v4(), port);
             sock = new ip::tcp::socket(*service);
             acc = new ip::tcp::acceptor(*service, *ep);
-            sock->non_blocking(true);
             acc->accept(*sock);
+            sock->non_blocking(true);
         }
         
         Server::~Server()

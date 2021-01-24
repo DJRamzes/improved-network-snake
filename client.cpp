@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <string>
 #include "own_snake.hpp"
 #include "food.hpp"
 #include "net_conf.hpp"
@@ -15,8 +16,7 @@ int main()
     int max_x, max_y;
     getmaxyx(stdscr, max_y, max_x);
     
-    Game_elements::Network_elements::Server server;
-    Game_elements::Network_elements::Client client("192.168.0.109");
+    Game_elements::Network_elements::Client client(std::string("127.0.0.1"));
     Game_elements::Local_elements::OwnSnake own_snake(stdscr, max_x, max_y, max_x / 2, max_y / 2);
     Game_elements::Local_elements::Food food(stdscr, max_x, max_y);
     int key;

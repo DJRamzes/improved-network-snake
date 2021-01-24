@@ -11,7 +11,7 @@ namespace Game_elements{
         const int useful_data_from_snake = 4; // coordinates(x & y), points, state
         const int useful_data_from_food = 2; // coordinates(x & y)
         
-        int port = 3025;
+        //int port;
     
         class Client{
             int buff[buffer_size];
