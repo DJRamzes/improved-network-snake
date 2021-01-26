@@ -11,7 +11,7 @@ namespace Game_elements{
         const int useful_data_from_snake = 4; // coordinates(x & y), points, state
         const int useful_data_from_food = 2; // coordinates(x & y)
         
-        int port = 3025;
+        int server_port = 3025; 
     
         class Client{
             int buff[buffer_size];
@@ -33,7 +33,7 @@ namespace Game_elements{
         {
             service = new boost::asio::io_service();
             sock = new ip::tcp::socket(*service);
-            ep = new ip::tcp::endpoint(ip::address::from_string(addr), port);
+            ep = new ip::tcp::endpoint(ip::address::from_string(addr), server_port);
             sock->connect(*ep);
             sock->non_blocking(true);
         }
@@ -88,7 +88,7 @@ namespace Game_elements{
         Server::Server()
         {
             service = new boost::asio::io_service();
-            ep = new ip::tcp::endpoint(ip::tcp::v4(), port);
+            ep = new ip::tcp::endpoint(ip::tcp::v4(), server_port);
             sock = new ip::tcp::socket(*service);
             acc = new ip::tcp::acceptor(*service, *ep);
             acc->accept(*sock);

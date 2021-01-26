@@ -43,7 +43,7 @@ namespace Game_elements{
             inline int getY() { return star->y; }
             inline int getState() { return state; }
         
-            int * takeData();
+            int * giveData();
     
         private:
     
@@ -54,7 +54,7 @@ namespace Game_elements{
             void refreshEdges();
         };
     
-        int * OwnSnake::takeData()
+        int * OwnSnake::giveData()
         {
             data[0] = star->x;
             data[1] = star->y;

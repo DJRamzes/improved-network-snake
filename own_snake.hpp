@@ -49,7 +49,7 @@ namespace Game_elements{
             void checkPosition();
             void refreshEdges();
             
-            int * takeData();
+            int * giveData();
         };
     
     }
