@@ -46,6 +46,10 @@ int main()
         food.display();
         if(own_snake.getState() == Game_elements::Local_elements::dead)
             break;
+        client.getData(own_snake.giveData(), food.giveData());
+        client.sendData();
+        if(client.available())
+            client.recvData();
     }
     endwin();
     return 0;

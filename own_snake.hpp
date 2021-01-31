@@ -40,6 +40,8 @@ namespace Game_elements{
             inline int getX() { return star->x; }
             inline int getY() { return star->y; }
             inline int getState() { return state; }
+            
+            int * giveData();
     
         private:
     
@@ -48,8 +50,6 @@ namespace Game_elements{
             void checkEdges();
             void checkPosition();
             void refreshEdges();
-            
-            int * giveData();
         };
     
     }

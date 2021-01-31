@@ -30,7 +30,7 @@ namespace Game_elements{
             void changeLocation();
             void display();
         
-            int * takeData();
+            int * giveData();
         };
     
         bool checkContact(Food * food, OwnSnake * own_snake);

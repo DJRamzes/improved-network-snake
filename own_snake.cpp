@@ -58,8 +58,8 @@ namespace Game_elements{
         {
             data[0] = star->x;
             data[1] = star->y;
-            data[3] = points_per_game;
-            data[4] = state;
+            data[2] = points_per_game;
+            data[3] = state;
             return data;
         }
     

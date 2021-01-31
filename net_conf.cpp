@@ -7,14 +7,16 @@ namespace Game_elements{
         
         using namespace boost::asio;
         
-        const int buffer_size = 1024;
+        const int send_buffer_size = 6;
+        const int recv_buffer_size = 1024;
         const int useful_data_from_snake = 4; // coordinates(x & y), points, state
         const int useful_data_from_food = 2; // coordinates(x & y)
         
         int server_port = 3025; 
     
         class Client{
-            int buff[buffer_size];
+            int send_buff[send_buffer_size];
+            int recv_buff[recv_buffer_size];
             
             boost::asio::io_service * service;
             ip::tcp::socket * sock; // the namespace "ip" from boost::asio
@@ -27,7 +29,14 @@ namespace Game_elements{
             void sendData();
             void recvData();
             void getData(int * data_from_snake, int * data_from_food);
+            int * giveData() { return recv_buff; }
+            int available();
         };
+        
+        int Client::available()
+        {
+            return sock->available();
+        }
         
         Client::Client(std::string addr)
         {
@@ -48,28 +57,30 @@ namespace Game_elements{
         
         void Client::sendData()
         {
-            sock->write_some(boost::asio::buffer(buff, buffer_size));
+            sock->write_some(boost::asio::buffer(send_buff, send_buffer_size));
         }
         
         void Client::recvData()
         {
-            sock->read_some(boost::asio::buffer(buff, buffer_size));
+            sock->read_some(boost::asio::buffer(recv_buff, recv_buffer_size));
         }
         
         void Client::getData(int * data_from_snake, int * data_from_food)
         {
-            int j;
-            for(int i = 0, j = 0; i < useful_data_from_snake; ++i, ++j)
-                buff[j] = data_from_snake[i];
+            int j = 0;
+            //int * tmp = send_buff;
+            for(int i = 0; i < useful_data_from_snake; ++i, ++j)
+                send_buff[j] = data_from_snake[i];
             for(int i = 0; i < useful_data_from_food; ++i, ++j)
-                buff[j] = data_from_food[i];
+                send_buff[j] = data_from_food[i];
         }
 
         
         /* -------------------------------  */
         
         class Server{
-            int buff[buffer_size];
+            int send_buff[send_buffer_size];
+            int recv_buff[recv_buffer_size];
             
             boost::asio::io_service * service;
             ip::tcp::endpoint * ep; // the namespace "ip" from boost::asio
@@ -83,7 +94,14 @@ namespace Game_elements{
             void sendData();
             void recvData();
             void getData(int * data_from_snake, int * data_from_food);
+            int * giveData() { return recv_buff; }
+            int available();
         };
+        
+        int Server::available()
+        {
+            return sock->available();
+        }
         
         Server::Server()
         {
@@ -97,30 +115,30 @@ namespace Game_elements{
         
         Server::~Server()
         {
-            sock->close();
             delete service;
             delete ep;
+            sock->close();
             delete sock;
             delete acc;
         }
         
         void Server::sendData()
         {
-            sock->write_some(boost::asio::buffer(buff, buffer_size));
+            sock->write_some(boost::asio::buffer(send_buff, send_buffer_size));
         }
         
         void Server::recvData()
         {
-            sock->read_some(boost::asio::buffer(buff, buffer_size));
+            sock->read_some(boost::asio::buffer(recv_buff, recv_buffer_size));
         }
         
         void Server::getData(int * data_from_snake, int * data_from_food)
         {
-            int j;
-            for(int i = 0, j = 0; i < useful_data_from_snake; ++i, ++j)
-                buff[j] = data_from_snake[i];
+            int j = 0; // Why must I to initialize exactly here?
+            for(int i = 0; i < useful_data_from_snake; ++i, ++j)
+                send_buff[j] = data_from_snake[i];
             for(int i = 0; i < useful_data_from_food; ++i, ++j)
-                buff[j] = data_from_food[i];
+                send_buff[j] = data_from_food[i];
         }
     }
     

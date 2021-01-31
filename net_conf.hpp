@@ -25,6 +25,8 @@ namespace Game_elements{
             void sendData();
             void recvData();
             void getData(int * data_from_snake, int * data_from_food);
+            int * giveData();
+            int available();
         };
         
         
@@ -46,6 +48,8 @@ namespace Game_elements{
             void sendData();
             void recvData();
             void getData(int * data_from_snake, int * data_from_food);
+            int * giveData();
+            int available();
         };
         
     }

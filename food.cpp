@@ -34,10 +34,10 @@ namespace Game_elements{
             void changeLocation();
             void display();
         
-            int * takeData();
+            int * giveData();
         };
     
-        int * Food::takeData()
+        int * Food::giveData()
         {
             data[0] = x;
             data[1] = y;
