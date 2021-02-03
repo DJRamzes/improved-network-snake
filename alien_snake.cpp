@@ -23,10 +23,33 @@ namespace Game_elements
             
             void getData(int * data);
             void move();
+            
+        private:
+        
             void checkPoints();
             void changeLocation(Star * star, int x, int y);
             void hideSnake();
+            void addStar();
         };
+        
+        void alien_snake::addStar()
+        {
+            Star * tmp = star;
+            while(tmp->next)
+                tmp = tmp->next;
+            tmp->next = new Star;
+            tmp->next->next = 0;
+            tmp->x = -1;
+            tmp->y = -1;
+        }
+        
+        void alien_snake::checkPoints()
+        {
+            if(buff[2] != points_per_game){
+                addStar();
+                points_per_game = buff[2];
+            }
+        }
         
         void alien_snake::getData(int * data){
             for(int i = 0; i < buffer_size; ++i)
@@ -37,6 +60,7 @@ namespace Game_elements
         {
             hideSnake();
             changeLocation(star, buff[0], buff[1]);
+            checkPoints();
         }
         
         void alien_snake::changeLocation(Star * star, int x, int y)

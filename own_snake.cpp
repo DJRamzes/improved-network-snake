@@ -154,6 +154,7 @@ namespace Game_elements{
             changeLocation(star, star->x + direction.x, star->y + direction.y);
             checkEdges();
             checkPosition();
+            box(win, '|', '-');
             wrefresh(win);
         }
 
