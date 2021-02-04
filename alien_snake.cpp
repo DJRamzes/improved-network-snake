@@ -2,6 +2,7 @@
 
 namespace Game_elements
 {
+    
     namespace Network_elements
     {
         const int buffer_size = 6;
@@ -23,6 +24,7 @@ namespace Game_elements
             
             void getData(int * data);
             void move();
+            int checkState();
             
         private:
         
@@ -31,6 +33,13 @@ namespace Game_elements
             void hideSnake();
             void addStar();
         };
+        
+        int alien_snake::checkState()
+        {
+            if(!buff[3])
+                return 1;
+            return 0;
+        }
         
         void alien_snake::addStar()
         {
@@ -61,6 +70,9 @@ namespace Game_elements
             hideSnake();
             changeLocation(star, buff[0], buff[1]);
             checkPoints();
+            checkState();
+            box(win, '|', '-');
+            wrefresh(win);
         }
         
         void alien_snake::changeLocation(Star * star, int x, int y)
@@ -105,3 +117,6 @@ namespace Game_elements
         
     }
 }
+
+
+

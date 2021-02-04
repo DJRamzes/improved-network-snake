@@ -18,6 +18,7 @@ namespace Game_elements
             
             void getData(int * data);
             void move();
+            int checkState();
             
         private:
         
