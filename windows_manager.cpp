@@ -15,7 +15,7 @@ namespace Game_elements{
         void createWindows();
         WINDOW * giveFirstWin() { return own_win; }
         WINDOW * giveSecondWin() { return another_win; }
-        int giveMax_x() { return max_x - max_x / 2 - 1; }
+        int giveMax_x() { return max_x - max_x / 2; }
         int giveMax_y() { return max_y - 1; }
     };
     

@@ -20,8 +20,8 @@ int main()
     Game_elements::windowsManager windows_manager;
     windows_manager.createWindows();
     Game_elements::Network_elements::Client client(std::string("127.0.0.1"));
-    Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), windows_manager.giveMax_x(),
-                                                      windows_manager.giveMax_y(), windows_manager.giveMax_x() / 2, windows_manager.giveMax_y() / 2);
+    Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), windows_manager.giveMax_x() - 1,
+                                                      windows_manager.giveMax_y() - 1, windows_manager.giveMax_x() / 2, windows_manager.giveMax_y() / 2);
     Game_elements::Local_elements::Food food(windows_manager.giveFirstWin(), windows_manager.giveMax_x(), windows_manager.giveMax_y());
     int key;
     while(1){
