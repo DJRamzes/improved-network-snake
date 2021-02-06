@@ -17,6 +17,8 @@ namespace Game_elements
             Star * star;
             int buff[buffer_size];
             int points_per_game;
+            int down_edge;
+            int right_edge;
             
         public:
             alien_snake(WINDOW * win, int x, int y);
@@ -30,9 +32,32 @@ namespace Game_elements
         
             void checkPoints();
             void changeLocation(Star * star, int x, int y);
-            void hideSnake();
+            void hideStar();
             void addStar();
+            void refreshEdges();
         };
+        
+        void alien_snake::refreshEdges()
+        {
+            for(int i = 0; i < 3; ++i){
+                wmove(win, 0, i);
+                waddch(win, ' ');
+                wmove(win, 1, i);
+                waddch(win, ' ');
+            }
+            /*for(int i = 0; i < right_edge; ++i){
+                wmove(win, down_edge - 1, i);
+                waddch(win, ' ');
+            }
+            for(int i = 0; i < down_edge; ++i){
+                wmove(win, i, 0);
+                waddch(win, ' ');
+            }
+            for(int i = 0; i < down_edge; ++i){
+                wmove(win, i, right_edge - 1);
+                waddch(win, ' ');
+            }*/
+        }
         
         int alien_snake::checkState()
         {
@@ -67,10 +92,11 @@ namespace Game_elements
         
         void alien_snake::move()
         {
-            hideSnake();
+            hideStar();
             changeLocation(star, buff[0], buff[1]);
             checkPoints();
             checkState();
+            refreshEdges();
             box(win, '|', '-');
             wrefresh(win);
         }
@@ -86,21 +112,35 @@ namespace Game_elements
             waddch(win, '*');
         }
         
-        void alien_snake::hideSnake()
+        void alien_snake::hideStar()
         {
             Star * tmp = star;
             while(tmp->next)
                 tmp = tmp->next;
             wmove(win, tmp->y, tmp->x);
             waddch(win, ' ');
+            wmove(win, tmp->y - 1, tmp->x - 1);
+            waddch(win, ' ');
+            wmove(win, tmp->y + 1, tmp->x + 1);
+            waddch(win, ' ');
+            wmove(win, tmp->y + 1, tmp->x - 1);
+            waddch(win, ' ');
+            wmove(win, tmp->y - 1, tmp->x + 1);
+            waddch(win, ' ');
+            wmove(win, tmp->y, tmp->x + 1);
+            waddch(win, ' ');
+            wmove(win, tmp->y, tmp->x - 1);
+            waddch(win, ' ');
+            wmove(win, tmp->y + 1, tmp->x);
+            waddch(win, ' ');
+            wmove(win, tmp->y - 1, tmp->x);
+            waddch(win, ' ');
         }
         
-        alien_snake::alien_snake(WINDOW * win, int x, int y) : points_per_game(0)
+        alien_snake::alien_snake(WINDOW * win, int max_x, int max_y) : points_per_game(0), down_edge(max_y), right_edge(max_x)
         {
             this->win = win;
             star = new Star;
-            star->x = x;
-            star->y = y;
             wmove(win, star->y, star->x);
             waddch(win, '*');
         }
