@@ -7,8 +7,8 @@ namespace Game_elements{
         
         using namespace boost::asio;
         
-        const int send_buffer_size = 3000;
-        const int recv_buffer_size = 3000;
+        const int send_buffer_size = 2000;
+        const int recv_buffer_size = 2000;
         const int useful_data_from_snake = 4; // coordinates(x & y), points, state
         const int useful_data_from_food = 2; // coordinates(x & y)
         
@@ -68,7 +68,6 @@ namespace Game_elements{
         void Client::getData(int * data_from_snake, int * data_from_food)
         {
             int j = 0;
-            //int * tmp = send_buff;
             for(int i = 0; i < useful_data_from_snake; ++i, ++j)
                 send_buff[j] = data_from_snake[i];
             for(int i = 0; i < useful_data_from_food; ++i, ++j)

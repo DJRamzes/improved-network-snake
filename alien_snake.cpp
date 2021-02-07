@@ -45,18 +45,6 @@ namespace Game_elements
                 wmove(win, 1, i);
                 waddch(win, ' ');
             }
-            /*for(int i = 0; i < right_edge; ++i){
-                wmove(win, down_edge - 1, i);
-                waddch(win, ' ');
-            }
-            for(int i = 0; i < down_edge; ++i){
-                wmove(win, i, 0);
-                waddch(win, ' ');
-            }
-            for(int i = 0; i < down_edge; ++i){
-                wmove(win, i, right_edge - 1);
-                waddch(win, ' ');
-            }*/
         }
         
         int alien_snake::checkState()

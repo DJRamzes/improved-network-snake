@@ -7,8 +7,8 @@ namespace Game_elements{
         
         using namespace boost::asio;
         
-        const int send_buffer_size = 3000;
-        const int recv_buffer_size = 3000;
+        const int send_buffer_size = 2000;
+        const int recv_buffer_size = 2000;
         const int useful_data_from_snake = 4; // coordinates(x & y), points, state
         const int useful_data_from_food = 2; // coordinates(x & y)
     
