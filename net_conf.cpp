@@ -33,6 +33,7 @@ namespace Game_elements{
             int * giveData() { return recv_buff; }
             int available();
             void sync_screens();
+            int * giveSize_buff() { return size_buff; }
         };
         
         void Client::sync_screens()
@@ -41,6 +42,8 @@ namespace Game_elements{
     	    send_buff[1] = size_buff[1];
     	    sendData();
     	    recvData();
+    	    size_buff[0] = recv_buff[0];
+    	    size_buff[1] = recv_buff[1];
             
             sock->non_blocking(true);
         }
@@ -111,6 +114,7 @@ namespace Game_elements{
             int * giveData() { return recv_buff; }
             int available();
             void sync_screens();
+            int * giveSize_buff() { return size_buff; }
         };
         
         void Server::sync_screens()

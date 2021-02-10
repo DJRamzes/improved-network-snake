@@ -17,16 +17,19 @@ int main()
     int max_x, max_y;
     getmaxyx(stdscr, max_y, max_x);
     
-    Game_elements::windowsManager windows_manager;
-    windows_manager.createWindows();
     Game_elements::Network_elements::Server server(max_x, max_y);
+    server.sync_screens();
+    
+    Game_elements::windowsManager windows_manager(server.giveSize_buff());
+    windows_manager.createWindows();
+    //Game_elements::Network_elements::Server server(max_x, max_y);
     Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), windows_manager.giveMax_x() - 1, windows_manager.giveMax_y() - 1,
                                                      windows_manager.giveMax_x() / 2, windows_manager.giveMax_y() / 2);
     Game_elements::Local_elements::Food food(windows_manager.giveFirstWin(), windows_manager.giveMax_x(), windows_manager.giveMax_y());
     Game_elements::Network_elements::alien_snake another_snake(windows_manager.giveSecondWin(), windows_manager.giveMax_x() - 1, windows_manager.giveMax_y() - 1);
     Game_elements::Network_elements::alien_food another_food(windows_manager.giveSecondWin());
     
-    server.sync_screens();
+    //server.sync_screens();
     
     int key;
     while(1){
@@ -63,8 +66,8 @@ int main()
             another_snake.move();
             another_food.getData(server.giveData());
             another_food.displayFood();
-            if(another_snake.checkState())
-            	break;
+            //if(another_snake.checkState())
+            //	break;
         }
     }
     endwin();

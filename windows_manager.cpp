@@ -5,22 +5,25 @@ namespace Game_elements{
     int timeout_val = 50;
 
     class windowsManager{ // not the OS Windows, this is a unit which will be manage windows on the screen.
+        int player_win_size[2];
         int max_x, max_y;
         int amount_of_players;
         WINDOW * own_win, * another_win;
     
     public:
-        windowsManager();
+        windowsManager(int * size_buff);
         ~windowsManager();
         void createWindows();
         WINDOW * giveFirstWin() { return own_win; }
         WINDOW * giveSecondWin() { return another_win; }
-        int giveMax_x() { return max_x - max_x / 2; }
-        int giveMax_y() { return max_y - 1; }
+        int giveMax_x() { return player_win_size[0]; }
+        int giveMax_y() { return player_win_size[1]; }
     };
     
-    windowsManager::windowsManager()
+    windowsManager::windowsManager(int * size_buff)
     {
+        player_win_size[0] = size_buff[0];
+        player_win_size[1] = size_buff[1];
         initscr();
         cbreak();
         timeout(timeout_val);
@@ -36,8 +39,8 @@ namespace Game_elements{
     void windowsManager::createWindows()
     {
         if(amount_of_players == 2){
-            own_win = newwin(max_y - 1, max_x - max_x / 2 - 1, 1, 1);
-            another_win = newwin(max_y - 1, max_x - max_x / 2 - 1, 1, max_x - max_x / 2);
+            own_win = newwin(player_win_size[1], player_win_size[0], 1, 1);
+            another_win = newwin(player_win_size[1], player_win_size[0], 1, max_x - max_x / 2);
             box(own_win, '|', '-');
             box(another_win, '|', '-');
             wrefresh(own_win);

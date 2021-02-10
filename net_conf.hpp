@@ -31,6 +31,7 @@ namespace Game_elements{
             int * giveData() { return recv_buff; }
             int available();
             void sync_screens();
+            int * giveSize_buff() { return size_buff; }
         };
         
         
@@ -57,6 +58,7 @@ namespace Game_elements{
             int * giveData() { return recv_buff; }
             int available();
             void sync_screens();
+            int * giveSize_buff() { return size_buff; }
         };
         
     }
