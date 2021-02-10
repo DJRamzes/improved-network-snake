@@ -17,7 +17,7 @@ namespace Game_elements{
         class Client{
             int send_buff[send_buffer_size];
             int recv_buff[recv_buffer_size];
-            int size_x, size_y;
+            int size_buff[2]; // rows and cols, size_buff[0] - x, size_buff[1] - y
             
             boost::asio::io_service * service;
             ip::tcp::socket * sock; // the namespace "ip" from boost::asio
@@ -37,11 +37,10 @@ namespace Game_elements{
         
         void Client::sync_screens()
         {
-            send_buffer[0] = std_rows_y;
-    	    send_buffer[1] = std_cols_x;
-    	    send(sock, send_buffer, BUFSIZE, 0);
-    	    sleep(2);
-    	    recv(sock, recv_buffer, BUFSIZE, 0);
+            send_buff[0] = size_buff[0];
+    	    send_buff[1] = size_buff[1];
+    	    sendData();
+    	    recvData();
             
             sock->non_blocking(true);
         }
@@ -51,8 +50,10 @@ namespace Game_elements{
             return sock->available();
         }
         
-        Client::Client(std::string addr, int in_size_x, int in_size_y) : size_x(in_size_x), size_y(in_size_y)
+        Client::Client(std::string addr, int in_size_x, int in_size_y)
         {
+            size_buff[0] = in_size_x;
+            size_buff[1] = in_size_y;
             service = new boost::asio::io_service();
             sock = new ip::tcp::socket(*service);
             ep = new ip::tcp::endpoint(ip::address::from_string(addr), server_port);
@@ -93,7 +94,7 @@ namespace Game_elements{
         class Server{
             int send_buff[send_buffer_size];
             int recv_buff[recv_buffer_size];
-            int size_x, size_y;
+            int size_buff[2];
             
             boost::asio::io_service * service;
             ip::tcp::endpoint * ep; // the namespace "ip" from boost::asio
@@ -114,38 +115,37 @@ namespace Game_elements{
         
         void Server::sync_screens()
         {
-	    sleep(1);
-    	    recv(sock, recv_buffer, BUFSIZE, 0);
+    	    recvData();
     	    
-    	    if(recv_buffer[0] <= std_rows_y && recv_buffer[1] <= std_cols_x){
-            	first_win = newwin(recv_buffer[0] - 1, recv_buffer[1] / 2 - 2, 1, 1);
-            	second_win = newwin(recv_buffer[0] - 1, recv_buffer[1] / 2 - 2, 1, std_cols_x - std_cols_x / 2);
-            	send_buffer[2] = 1; /* first case */
-            	send_buffer[0] = recv_buffer[0];
-            	send_buffer[1] = recv_buffer[1];
+    	    if(recv_buff[0] <= size_buff[0] && recv_buff[1] <= size_buff[1]){
+            	size_buff[0] = recv_buff[0] / 2 - 1;
+            	size_buff[1] = recv_buff[1] - 1;
+            	
+            	send_buff[0] = size_buff[0];
+            	send_buff[1] = size_buff[1];
     	    }
-    	    else if(recv_buffer[0] >= std_rows_y && recv_buffer[1] <= std_cols_x){
-            	first_win = newwin(std_rows_y - 1, recv_buffer[1] / 2 - 2, 1, 1);
-            	second_win = newwin(std_rows_y - 1, recv_buffer[1] - 2 - 2, 1, std_cols_x - std_cols_x / 2);
-            	send_buffer[2] = 2; /* second case */
-            	send_buffer[0] = std_rows_y;
-            	send_buffer[1] = recv_buffer[1];
+    	    else if(recv_buff[0] >= size_buff[1] && recv_buff[1] <= size_buff[0]){
+            	size_buff[0] = recv_buff[0] / 2 - 1;
+            	size_buff[1] = size_buff[1] - 1;
+            	
+            	send_buff[0] = size_buff[0];
+            	send_buff[1] = size_buff[1];
     	    }    
-    	    else if(recv_buffer[0] <= std_rows_y && recv_buffer[1] >= std_cols_x){
-            	first_win = newwin(recv_buffer[0] - 1, std_cols_x / 2 - 2, 1, 1);
-            	second_win = newwin(recv_buffer[0] - 1, std_cols_x / 2 - 2, 1, std_cols_x - std_cols_x / 2);
-            	send_buffer[2] = 3; /* third case */
-            	send_buffer[0] = recv_buffer[0];
-            	send_buffer[1] = std_cols_x;
+    	    else if(recv_buff[0] <= size_buff[1] && recv_buff[1] >= size_buff[0]){
+            	size_buff[0] = size_buff[0] / 2 - 1;
+            	size_buff[1] = recv_buff[1] - 1;
+            	
+            	send_buff[0] = size_buff[0];
+            	send_buff[1] = size_buff[1];
     	    }    
     	    else{
-            	first_win = newwin(std_rows_y - 1, std_cols_x / 2 - 2, 1, 1);
-            	second_win = newwin(std_rows_y - 1, std_cols_x / 2 - 2, 1, std_cols_x - std_cols_x / 2);
-            	send_buffer[2] = 4; /* fourth case */
-            	send_buffer[0] = std_rows_y;
-            	send_buffer[1] = std_cols_x;
+            	size_buff[0] = size_buff[0] / 2 - 1;
+            	size_buff[1] = size_buff[1] - 1;
+                
+            	send_buff[0] = size_buff[0];
+            	send_buff[1] = size_buff[1];
     	    }
-    	    send(sock, send_buffer, BUFSIZE, 0);	
+    	    sendData();	
             
             sock->non_blocking(true);
         }
@@ -155,8 +155,10 @@ namespace Game_elements{
             return sock->available();
         }
         
-        Server::Server(int in_size_x, int in_size_y) : size_x(in_size_x), size_y(in_size_y)
+        Server::Server(int in_size_x, int in_size_y)
         {
+            size_buff[0] = in_size_x;
+            size_buff[1] = in_size_y;
             service = new boost::asio::io_service();
             ep = new ip::tcp::endpoint(ip::tcp::v4(), server_port);
             sock = new ip::tcp::socket(*service);

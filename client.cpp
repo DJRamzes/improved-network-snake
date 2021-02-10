@@ -14,14 +14,20 @@ int main()
     noecho();
     curs_set(0);
     
+    int max_x, max_y;
+    getmaxyx(stdscr, max_y, max_x);
+    
     Game_elements::windowsManager windows_manager;
     windows_manager.createWindows();
-    Game_elements::Network_elements::Client client(std::string("127.0.0.1"));
+    Game_elements::Network_elements::Client client(std::string("192.168.0.109"), max_x, max_y);
     Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), windows_manager.giveMax_x() - 1,
                                                       windows_manager.giveMax_y() - 1, windows_manager.giveMax_x() / 2, windows_manager.giveMax_y() / 2);
     Game_elements::Local_elements::Food food(windows_manager.giveFirstWin(), windows_manager.giveMax_x(), windows_manager.giveMax_y());
     Game_elements::Network_elements::alien_snake another_snake(windows_manager.giveSecondWin(), windows_manager.giveMax_x() - 1, windows_manager.giveMax_y() - 1);
     Game_elements::Network_elements::alien_food another_food(windows_manager.giveSecondWin());
+    
+    client.sync_screens();
+    
     int key;
     while(1){
         key = getch();

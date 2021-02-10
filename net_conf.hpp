@@ -15,7 +15,7 @@ namespace Game_elements{
         class Client{
             int send_buff[send_buffer_size];
             int recv_buff[recv_buffer_size];
-            int size_x, size_y;
+            int size_buff[2];
             
             boost::asio::io_service * service;
             ip::tcp::socket * sock; // the namespace "ip" from boost::asio
@@ -40,7 +40,7 @@ namespace Game_elements{
         class Server{
             int send_buff[send_buffer_size];
             int recv_buff[recv_buffer_size];
-            int size_x, size_y;
+            int size_buff[2];
             
             boost::asio::io_service * service;
             ip::tcp::endpoint * ep; // the namespace "ip" from boost::asio
