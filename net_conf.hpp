@@ -15,13 +15,14 @@ namespace Game_elements{
         class Client{
             int send_buff[send_buffer_size];
             int recv_buff[recv_buffer_size];
+            int size_x, size_y;
             
             boost::asio::io_service * service;
             ip::tcp::socket * sock; // the namespace "ip" from boost::asio
             ip::tcp::endpoint * ep;
             
         public:
-            Client(std::string addr);
+            Client(std::string addr, int size_x, int size_y);
             ~Client();
             
             void sendData();
@@ -29,6 +30,7 @@ namespace Game_elements{
             void getData(int * data_from_snake, int * data_from_food);
             int * giveData() { return recv_buff; }
             int available();
+            void sync_screens();
         };
         
         
@@ -38,6 +40,7 @@ namespace Game_elements{
         class Server{
             int send_buff[send_buffer_size];
             int recv_buff[recv_buffer_size];
+            int size_x, size_y;
             
             boost::asio::io_service * service;
             ip::tcp::endpoint * ep; // the namespace "ip" from boost::asio
@@ -45,7 +48,7 @@ namespace Game_elements{
             ip::tcp::acceptor * acc;
             
         public:
-            Server();
+            Server(int size_x, int size_y);
             ~Server();
             
             void sendData();
@@ -53,6 +56,7 @@ namespace Game_elements{
             void getData(int * data_from_snake, int * data_from_food);
             int * giveData() { return recv_buff; }
             int available();
+            void sync_screens();
         };
         
     }
