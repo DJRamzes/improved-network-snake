@@ -14,6 +14,7 @@ namespace Game_elements{
         WINDOW * giveSecondWin() { return another_win; }
         int giveMax_x() { return player_win_size[0]; }
         int giveMax_y() { return player_win_size[1]; }
+        void menu();
     };
 
 }

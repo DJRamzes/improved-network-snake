@@ -21,6 +21,7 @@ int main()
     server.sync_screens();
     
     Game_elements::windowsManager windows_manager(server.giveSize_buff());
+    windows_manager.menu();
     windows_manager.createWindows();
     //Game_elements::Network_elements::Server server(max_x, max_y);
     Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), windows_manager.giveMax_x() - 1, windows_manager.giveMax_y() - 1,

@@ -21,6 +21,7 @@ int main()
     client.sync_screens();
     
     Game_elements::windowsManager windows_manager(client.giveSize_buff());
+    windows_manager.menu();
     windows_manager.createWindows();
     //Game_elements::Network_elements::Client client(std::string("192.168.0.110"), max_x, max_y);
     Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), windows_manager.giveMax_x() - 1,
