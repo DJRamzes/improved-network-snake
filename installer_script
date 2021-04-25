@@ -1,0 +1,11 @@
+#!/bin/bash
+g++ -Wall -g -c windows_manager.cpp -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -Wall -g -c net_conf.cpp -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -Wall -g -c own_snake.cpp -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -Wall -g -c food.cpp -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -Wall -g -c alien_snake.cpp -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -Wall -g -c alien_food.cpp -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -Wall -g -c server.cpp -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -Wall -g -c client.cpp -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -o server windows_manager.o net_conf.o own_snake.o food.o alien_snake.o alien_food.o server.o -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
+g++ -o client windows_manager.o net_conf.o own_snake.o food.o alien_snake.o alien_food.o client.o -lpthread -lboost_system -lncurses -DNCURSES_NOMACROS
