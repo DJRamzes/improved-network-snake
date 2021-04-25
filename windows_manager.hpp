@@ -7,14 +7,15 @@ namespace Game_elements{
     	WINDOW * own_win, * another_win;
     
     public:
-        windowsManager(int * size_buff);
+        windowsManager();
         ~windowsManager();
+        void getSize(int * size_buff);
         void createWindows();
         WINDOW * giveFirstWin() { return own_win; }
         WINDOW * giveSecondWin() { return another_win; }
         int giveMax_x() { return player_win_size[0]; }
         int giveMax_y() { return player_win_size[1]; }
-        void menu();
+        int menu();
     };
 
 }

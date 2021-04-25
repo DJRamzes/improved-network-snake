@@ -11,8 +11,9 @@ namespace Game_elements{
         WINDOW * own_win, * another_win;
     
     public:
-        windowsManager(int * size_buff);
+        windowsManager();
         ~windowsManager();
+        void getSize(int * size_buff);
         void createWindows();
         WINDOW * giveFirstWin() { return own_win; }
         WINDOW * giveSecondWin() { return another_win; }
@@ -51,22 +52,25 @@ namespace Game_elements{
                 key = 3;
                 break;
         }
+        amount_of_players = key;
         timeout(timeout_val);
         return key;
     }
     
-    windowsManager::windowsManager(int * size_buff)
+    windowsManager::windowsManager()
     {
-        player_win_size[0] = size_buff[0];
-        player_win_size[1] = size_buff[1];
         initscr();
         cbreak();
-        //timeout(timeout_val);
         keypad(stdscr, 1);
         noecho();
         curs_set(0);
         getmaxyx(stdscr, max_y, max_x);
-        amount_of_players = 2;
+    }
+    
+    void windowsManager::getSize(int * size_buff)
+    {
+        player_win_size[0] = size_buff[0];
+        player_win_size[1] = size_buff[1];
     }
     
     windowsManager::~windowsManager() { endwin(); }
@@ -80,6 +84,11 @@ namespace Game_elements{
             box(another_win, '|', '-');
             wrefresh(own_win);
             wrefresh(another_win);
+        }
+        if(amount_of_players == 1){
+            own_win = newwin(max_y, max_x, 0, 0);
+            box(own_win, '|', '-');
+            wrefresh(own_win);
         }
     }
 
