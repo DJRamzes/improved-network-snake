@@ -32,7 +32,8 @@ namespace Game_elements{
     
             OwnSnake(WINDOW * win, int max_x, int max_y, int x, int y);
             ~OwnSnake();
-    
+            
+            int getPoints();
             void turnLeft();
             void turnRight();
             void turnUp();
@@ -53,6 +54,8 @@ namespace Game_elements{
             void checkPosition();
             void refreshEdges();
         };
+        
+        int OwnSnake::getPoints() { return points_per_game; }
     
         int * OwnSnake::giveData()
         {

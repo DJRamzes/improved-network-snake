@@ -17,99 +17,112 @@ int main()
     int max_x, max_y;
     getmaxyx(stdscr, max_y, max_x);
     
+    int own_snake_points, another_snake_points;
+    
     Game_elements::windowsManager windows_manager;
     int players_amount = windows_manager.menu();
+    try
+    {
+        if(players_amount == 2){
+    	    Game_elements::Network_elements::Client client(std::string("192.168.0.110"), max_x, max_y);
+    	    client.sync_screens();
+    	    windows_manager.getSize(client.giveSize_buff());    
+    	    windows_manager.createWindows();
     
-    if(players_amount == 2){
-    	Game_elements::Network_elements::Client client(std::string("192.168.0.108"), max_x, max_y);
-    	client.sync_screens();
-    	windows_manager.getSize(client.giveSize_buff());    
-    	windows_manager.createWindows();
-    
-        Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), windows_manager.giveMax_x() - 1,
+    	    Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), windows_manager.giveMax_x() - 1,
                                                       windows_manager.giveMax_y() - 1, windows_manager.giveMax_x() / 2, windows_manager.giveMax_y() / 2);
-        Game_elements::Local_elements::Food food(windows_manager.giveFirstWin(), windows_manager.giveMax_x(), windows_manager.giveMax_y());
-        Game_elements::Network_elements::alien_snake another_snake(windows_manager.giveSecondWin(), windows_manager.giveMax_x() - 1, windows_manager.giveMax_y() - 1);
-        Game_elements::Network_elements::alien_food another_food(windows_manager.giveSecondWin());
+            Game_elements::Local_elements::Food food(windows_manager.giveFirstWin(), windows_manager.giveMax_x(), windows_manager.giveMax_y());
+            Game_elements::Network_elements::alien_snake another_snake(windows_manager.giveSecondWin(), windows_manager.giveMax_x() - 1, windows_manager.giveMax_y() - 1);
+            Game_elements::Network_elements::alien_food another_food(windows_manager.giveSecondWin());
     
-        int key;
-        while(1){
-            key = getch();
-            switch(key){
-                case KEY_UP:
-                    own_snake.turnUp();
+            int key;
+            while(1){
+                key = getch();
+                switch(key){
+                    case KEY_UP:
+                        own_snake.turnUp();
+                        break;
+                    case KEY_DOWN:
+                        own_snake.turnDown();
+                        break;
+                    case KEY_LEFT:
+                        own_snake.turnLeft();
+                        break;
+                    case KEY_RIGHT:
+                        own_snake.turnRight();
+                        break;
+                    case ERR:
+                        own_snake.keepMoving();
+                        break;
+                }
+                if(Game_elements::Local_elements::checkContact(&food, &own_snake)){
+                    own_snake.addStar();
+                    food.changeLocation();
+                }
+                food.display();
+                if(own_snake.getState() == Game_elements::Local_elements::dead)
                     break;
-                case KEY_DOWN:
-                    own_snake.turnDown();
-                    break;
-                case KEY_LEFT:
-                    own_snake.turnLeft();
-                    break;
-                case KEY_RIGHT:
-                    own_snake.turnRight();
-                    break;
-                case ERR:
-                    own_snake.keepMoving();
-                    break;
+                client.getData(own_snake.giveData(), food.giveData());
+                client.sendData();
+                if(client.available()){
+                    client.recvData();
+                    another_snake.getData(client.giveData());
+                    another_snake.move();
+                    another_food.getData(client.giveData());
+                    another_food.displayFood();
+                    if(another_snake.checkState())
+                        break;
+                }
+                own_snake_points = own_snake.getPoints();
+                another_snake_points = another_snake.getPoints();
             }
-            if(Game_elements::Local_elements::checkContact(&food, &own_snake)){
-                own_snake.addStar();
-                food.changeLocation();
-            }
-            food.display();
-            if(own_snake.getState() == Game_elements::Local_elements::dead)
-                break;
-            client.getData(own_snake.giveData(), food.giveData());
-            client.sendData();
-            if(client.available()){
-                client.recvData();
-                another_snake.getData(client.giveData());
-                another_snake.move();
-                another_food.getData(client.giveData());
-                another_food.displayFood();
-                if(another_snake.checkState())
-                    break;
-            }    
-        }
-    //for(int i = 0; i < 100;);
-    endwin();
-    } else if(players_amount == 1){
-    	windows_manager.createWindows();
+            endwin();
+        } else if(players_amount == 1){
+    	    windows_manager.createWindows();
     
-        Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), max_x - 1, max_y - 1, max_x / 2, max_y / 2);
-        Game_elements::Local_elements::Food food(windows_manager.giveFirstWin(), max_x, max_y);
-        int key;
-        while(1){
-            key = getch();
-            switch(key){
-                case KEY_UP:
-                    own_snake.turnUp();
-                    break;
-                case KEY_DOWN:
-                    own_snake.turnDown();
-                    break;
-                case KEY_LEFT:
-                    own_snake.turnLeft();
-                    break;
-                case KEY_RIGHT:
-                    own_snake.turnRight();
-                    break;
-                case ERR:
-                    own_snake.keepMoving();
+    	    Game_elements::Local_elements::OwnSnake own_snake(windows_manager.giveFirstWin(), max_x - 1, max_y - 1, max_x / 2, max_y / 2);
+    	    Game_elements::Local_elements::Food food(windows_manager.giveFirstWin(), max_x, max_y);
+    	    int key;
+    	    while(1){
+                key = getch();
+                switch(key){
+                    case KEY_UP:
+                        own_snake.turnUp();
+                        break;
+                    case KEY_DOWN:
+                        own_snake.turnDown();
+                        break;
+                    case KEY_LEFT:
+                        own_snake.turnLeft();
+                        break;
+                    case KEY_RIGHT:
+                        own_snake.turnRight();
+                        break;
+                    case ERR:
+                        own_snake.keepMoving();
+                        break;
+                }
+                if(Game_elements::Local_elements::checkContact(&food, &own_snake)){
+                    own_snake.addStar();
+                    food.changeLocation();
+                }
+                food.display();
+                if(own_snake.getState() == Game_elements::Local_elements::dead)
                     break;
             }
-            if(Game_elements::Local_elements::checkContact(&food, &own_snake)){
-                own_snake.addStar();
-                food.changeLocation();
-            }
-            food.display();
-            if(own_snake.getState() == Game_elements::Local_elements::dead)
-                break;
-        }
-    //for(int i = 0; i < 100;);
-    endwin();
-    } else if (players_amount == 3)
-        endwin();
+            endwin();
+        } else if (players_amount == 3)
+            endwin();
+    }
+    
+    catch(std::exception& ex){
+        wmove(windows_manager.giveFirstWin(), windows_manager.giveMax_y() / 2, windows_manager.giveMax_x() / 2 - 10);
+        waddstr(windows_manager.giveFirstWin(), "Your points: ");
+        waddch(windows_manager.giveFirstWin(), 1);
+        wrefresh(windows_manager.giveFirstWin());
+        while(1);
+    }
+    
     return 0;
 }
 

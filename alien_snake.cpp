@@ -24,6 +24,7 @@ namespace Game_elements
             alien_snake(WINDOW * win, int x, int y);
             ~alien_snake();
             
+            int getPoints();
             void getData(int * data);
             void move();
             int checkState();
@@ -36,6 +37,8 @@ namespace Game_elements
             void addStar();
             void refreshEdges();
         };
+        
+        int alien_snake::getPoints() { return points_per_game; }
         
         void alien_snake::refreshEdges()
         {

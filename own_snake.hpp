@@ -30,7 +30,8 @@ namespace Game_elements{
     
             OwnSnake(WINDOW * win, int max_x, int max_y, int x, int y);
             ~OwnSnake();
-    
+            
+            int getPoints();
             void turnLeft();
             void turnRight();
             void turnUp();

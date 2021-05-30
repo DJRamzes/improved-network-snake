@@ -20,6 +20,7 @@ namespace Game_elements
             alien_snake(WINDOW * win, int max_x, int max_y);
             ~alien_snake();
             
+            int getPoints();
             void getData(int * data);
             void move();
             int checkState();
