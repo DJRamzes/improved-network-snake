@@ -113,14 +113,30 @@ int main()
             endwin();
         } else if (players_amount == 3)
             endwin();
+
+	wmove(windows_manager.giveFirstWin(), windows_manager.giveMax_y() / 2, windows_manager.giveMax_x() / 2 - 10);
+        waddstr(windows_manager.giveFirstWin(), "Your points: ");
+        waddstr(windows_manager.giveFirstWin(), std::to_string(own_snake_points).c_str());
+        
+        wmove(windows_manager.giveSecondWin(), windows_manager.giveMax_y() / 2, windows_manager.giveMax_y() / 2 - 10);
+        waddstr(windows_manager.giveSecondWin(), "Enemy's points: ");
+        waddstr(windows_manager.giveSecondWin(), std::to_string(another_snake_points).c_str());
+        
+        wrefresh(windows_manager.giveFirstWin());
+        wrefresh(windows_manager.giveSecondWin());
     }
     
     catch(std::exception& ex){
         wmove(windows_manager.giveFirstWin(), windows_manager.giveMax_y() / 2, windows_manager.giveMax_x() / 2 - 10);
         waddstr(windows_manager.giveFirstWin(), "Your points: ");
-        waddch(windows_manager.giveFirstWin(), 1);
+        waddstr(windows_manager.giveFirstWin(), std::to_string(own_snake_points).c_str());
+        
+        wmove(windows_manager.giveSecondWin(), windows_manager.giveMax_y() / 2, windows_manager.giveMax_y() / 2 - 10);
+        waddstr(windows_manager.giveSecondWin(), "Enemy's points: ");
+        waddstr(windows_manager.giveSecondWin(), std::to_string(another_snake_points).c_str());
+        
         wrefresh(windows_manager.giveFirstWin());
-        while(1);
+        wrefresh(windows_manager.giveSecondWin());
     }
     
     return 0;
